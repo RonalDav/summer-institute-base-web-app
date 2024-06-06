@@ -20,7 +20,12 @@ class App < Sinatra::Base
   end
 
   def projects_root
+    #   Pathnames.new"#{__dir__}/projects" 
       "#{__dir__}/projects"
+  end
+  
+  def sanitize_project_name(name)
+      name.downcase.gsub(' ','_')
   end
   
   get '/examples' do
@@ -33,16 +38,32 @@ class App < Sinatra::Base
     erb(:index)
   end
   
-  get '/projects/new' do
-      erb(:new_project)
-    #   "Hello World"
+  get '/projects/:name' do
+      # a very sinatra thing to get the variable
+      if params[:name] == 'new' 
+          erb(:new_project)
+      else
+          proj_name = sanitize_project_name(params[:name])
+          # make sure we're going somewhere that exists
+          @directory = Pathname.new("#{projects_root}/#{proj_name}")
+        #   @directory = Pathname.new("#{projects_root}/#{params[:name]}")
+          
+          if(@directory.directory? && @directory.readable?)
+              erb(:show_project)
+          else
+              session[:flash] = { danger: "Project '#{params[:name]} does not exist!"}
+              redirect(url('/'))
+              #redirect flash message
+          end
+      end
   end
   
   #first post request
   post '/projects/new' do
       "Hello World"
       # make dir based on name given in form
-      name = params[:name].downcase.gsub(' ','_')
+    #   name = 
+      name = sanitize_project_name(params[:name])
       FileUtils.mkdir_p("#{projects_root}/#{name}")
       
       session[:flash] = {info: "Created new project #{params[:name]}" }
