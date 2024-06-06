@@ -19,13 +19,17 @@ class App < Sinatra::Base
     'Summer Instititue Starter App'
   end
 
+  def projects_root
+      "#{__dir__}/projects"
+  end
+  
   get '/examples' do
     erb(:examples)
   end
 
   get '/' do
     logger.info('requsting the index')
-    @flash = session.delete(:flash) || { info: 'Welcome to Summer Institute!' }
+    @flash = session.delete(:flash) || { info: 'Summer Institute 2024' }
     erb(:index)
   end
   
@@ -37,6 +41,13 @@ class App < Sinatra::Base
   #first post request
   post '/projects/new' do
       "Hello World"
+      # make dir based on name given in form
+      name = params[:name].downcase.gsub(' ','_')
+      FileUtils.mkdir_p("#{projects_root}/#{name}")
+      
+      session[:flash] = {info: "Created new project #{params[:name]}" }
+      
+      redirect(url("/projects/#{name}"))
   end
   
 end
