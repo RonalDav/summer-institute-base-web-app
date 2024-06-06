@@ -4,4 +4,21 @@
 
 
 
-<%= @project_directories %>
+<!--<%= project_dirs %>-->
+
+<div class='row my-5'>
+    <ul class='list-group list-group-horizontal flex-wrap'>
+        
+        <%- project_dirs.each do |project_dir| -%>
+        <li class='list-group-item btn btn-outline-dark m-3 border'>
+            <div>
+                <a href="<%= url("/projects/#{project_dir}")%>" class="text-center" style>
+                    <i class='fas fa-fw fa-capsules fa-6x'></i>
+                    <p><%= project_dir.gsub('_',' ').capitalize %></p>
+                </a>
+            </div>
+        </li>
+        <%- end -%>
+        
+    </ul>
+</div>
