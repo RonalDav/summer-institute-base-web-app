@@ -28,6 +28,13 @@ class App < Sinatra::Base
       name.downcase.gsub(' ','_')
   end
   
+  def project_dirs
+      Dir.children(projects_root).select do |path|
+        #   true
+          Pathname.new("#{projects_root}/#{path}").directory?
+      end.sort_by(&:to_s)
+  end
+  
   get '/examples' do
     erb(:examples)
   end
@@ -35,6 +42,10 @@ class App < Sinatra::Base
   get '/' do
     logger.info('requsting the index')
     @flash = session.delete(:flash) || { info: 'Summer Institute 2024' }
+    
+    # @project_directories = Dir.children(projects_root)
+    @project_directories = project_dirs
+    
     erb(:index)
   end
   
