@@ -1,0 +1,13 @@
+
+<h1 class="my-3 text-center">So you want to make a new project?</h1>
+
+<form action="<%= url("/projects/new") %>" method="post">
+    <div class="form-group">
+        
+        <label for="name">Project Name:</label>
+        <input class="form-control" type="text" id="name" name="name" required />
+        
+    </div>
+    
+    <button name="new_project_button" class="btn btn-secondary">Create New Project</button>
+</form>
