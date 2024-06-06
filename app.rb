@@ -28,7 +28,10 @@ class App < Sinatra::Base
     @flash = session.delete(:flash) || { info: 'Welcome to Summer Institute!' }
     erb(:index)
   end
+  
   get '/projects/new' do
       erb(:new_project)
+    #   "Hello World"
   end
+  
 end
