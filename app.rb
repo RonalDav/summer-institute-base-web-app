@@ -24,4 +24,7 @@ class App < Sinatra::Base
     @flash = { info: 'Welcome to Summer Institute!' }
     erb(:index)
   end
+  get '/projects/new' do
+      erb(:new_project)
+  end
 end
